@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
+<%@ include file="/WEB-INF/jsp/rootPath/ctxrootPath.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -37,15 +38,15 @@ top.location.href = location.href;
 			<s:form action="login" method="post" theme="simple" namespace="/pub">
 		<table border="0">
 			<tr>
-				<td align="right" width="60">用户名：</td>
+				<td align="right" width="100">用户名：</td>
 				<td  colspan="2"><input type="text" name="username" /></td>
 			</tr>
 			<tr>
-				<td  align="right" width="60">密码：</td>
+				<td  align="right" width="100">密码：</td>
 				<td colspan="2"><input type="password" name="password" /></td>
 			</tr>
 			<tr valign="middle">
-				<td  align="right" width="60">验证码：</td>
+				<td  align="right" width="100">验证码：</td>
 				<td valign="middle"><input type="text" name="code"  size="4"/></td><td> <img alt="" src="kaptcha.jpg" align="middle"/></td>
 			</tr>
 			<tr align="center">
@@ -57,7 +58,5 @@ top.location.href = location.href;
 		</center>
 	
 	</div></div>
-	
-
 </body>
 </html>

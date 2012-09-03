@@ -94,26 +94,6 @@
 		</dependency>
 		<!-- End of JBoss 5.x and Spring 2.5.6 cure -->
 
-		<!-- LOG -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>${slf4j.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jcl-over-slf4j</artifactId>
-			<version>${slf4j.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<!-- LOG ENDS -->
 
 		<!-- SERVLET -->
 		<dependency>
@@ -255,21 +235,21 @@
 		<!-- <artifactId>spring-aspects</artifactId> -->
 		<!-- <version>${spring.version}</version> -->
 		<!-- </dependency> -->
-		 <dependency> 
-		 <groupId>cglib</groupId> 
-		 <artifactId>cglib-nodep</artifactId> 
-		 <version>2.1_3</version> 
-		 </dependency> 
-		 <dependency> 
-		 <groupId>org.aspectj</groupId> 
-		 <artifactId>aspectjweaver</artifactId> 
-		 <version>1.6.1</version> 
-		 </dependency> 
-		 <dependency> 
-		 <groupId>org.aspectj</groupId> 
-		 <artifactId>aspectjrt</artifactId> 
-		 <version>1.6.1</version> 
-		 </dependency> 
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib-nodep</artifactId>
+			<version>2.1_3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>1.6.1</version>
+		</dependency>
 		<!-- Spring ENDS -->
 
 		<!-- Hibernate -->

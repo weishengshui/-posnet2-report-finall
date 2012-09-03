@@ -1,25 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <beans:beans xmlns="http://www.springframework.org/schema/security"
-    xmlns:beans="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
                         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 
-	<http auto-config="true" use-expressions="true">
-		<intercept-url pattern="/**" access="hasRole('1')"/>
-		
+
+	<http auto-config="true" use-expressions="true"
+		access-denied-page="/pub/deniedPage.jsp">
+
+		<!-- 查看明细报表的权限 -->
+		<intercept-url pattern="/view/qqmeishi/detail*" access="hasRole('report_detail')" />
+
+		<!-- 查看验证码使用情况的权限 -->
+		<intercept-url pattern="/view/qqmeishi/tokenUse*"
+			access="hasRole('report_token')" />
+
+		<!-- 查看总计报表的权限 -->
+		<intercept-url pattern="/view/qqmeishi/totalStatements*"
+			access="hasRole('report_total')" />
+
+
+		<intercept-url pattern="/**" access="permitAll" />
 		<session-management>
-			<concurrency-control max-sessions="1"  expired-url="/pub/index.jsp"/>
+			<concurrency-control max-sessions="1"
+				expired-url="/" />
 		</session-management>
 	</http>
+
+	<authentication-manager alias="authenticationManager">
 	
-	<authentication-manager>
 		<authentication-provider>
+			<jdbc-user-service data-source-ref="posnet2ReportDataSource" 
+				users-by-username-query=""
+				authorities-by-username-query=""/>
 			<user-service>
-				<user name="wss" password="wss" authorities="1"/>
+				<user name="admin" password="admin" authorities="report_detail, report_token, report_total" />
+				<user name="detail" password="detail" authorities="report_detail" />
+				<user name="token" password="token" authorities="report_token" />
+				<user name="total" password="total" authorities="report_total" />
+				<user name="mix" password="mix" authorities="report_detail, report_token" />
 			</user-service>
 		</authentication-provider>
 	</authentication-manager>
-	
+
 </beans:beans>

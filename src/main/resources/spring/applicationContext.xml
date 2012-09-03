@@ -14,5 +14,6 @@
 	<import resource="classpath:/spring/app-action.xml" />
 	<import resource="classpath:/spring/app-service.xml" />
 	<import resource="classpath:/spring/app-dao.xml" />
+	<import resource="classpath:/spring/applicationContext-security.xml"/>
 
 </beans>
