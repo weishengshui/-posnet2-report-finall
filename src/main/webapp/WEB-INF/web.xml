@@ -35,6 +35,8 @@
 	<listener>
 		<listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
 	</listener>
+	<!--	当session失效时，删除临时图片的监听器	-->
+	<listener><listener-class>org.jfree.chart.servlet.ChartDeleter</listener-class></listener>
 
 
 	<filter>
@@ -144,8 +146,19 @@
 		<url-pattern>/servlet/image</url-pattern>
 	</servlet-mapping>
 	<!-- Servlet ENDS -->
+	
+	<servlet>
+		<servlet-name>displayChart</servlet-name>
+		<servlet-class>org.jfree.chart.servlet.DisplayChart</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>displayChart</servlet-name>
+		<url-pattern>/servlet/displayChart</url-pattern>
+	</servlet-mapping>
 
-
+	
+	
+	
 	<session-config>
 		<!-- in minutes -->
 		<session-timeout>30</session-timeout>

@@ -27,5 +27,9 @@ public class ActivityDao extends BaseDao<Activity> {
 			throw new DaoLevelException(e);
 		}
 	}
+	
+	public Activity getActivityById(String id){
+		return null;
+	}
 
 }
