@@ -12,7 +12,7 @@
 <decorator:head />
 <style type="text/css">
 	div#div1 {
-	background-image: url('./images/report_background.jpg');
+	background-image: url('<%=ctxRootPath %>/images/report_background.jpg');
 		background-position:center;
 		background-repeat:no-repeat;
 	position: fixed;
@@ -29,11 +29,11 @@ div#div1 > img{
 </style>
 </head>
 
-<body style="background-image: url('./images/report_background.jpg');
+<body style="background-image: url('<%=ctxRootPath %>/images/report_background.jpg');
 		background-position:center;
 		background-repeat:no-repeat;">
 <div id="div1">
-<img src="./images/report_background.jpg"/>
+<img src="<%=ctxRootPath %>/images/report_background.jpg"/>
 </div>
 
 

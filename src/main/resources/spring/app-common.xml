@@ -34,8 +34,11 @@
 			<list>
 				<!-- Here config your domain class list -->
 				<value>com.chinarewards.posnet2.report.domain.Activity</value>
-				<value>com.chinarewards.posnet2.report.domain.Report_User</value>
-				<value>com.chinarewards.posnet2.report.domain.Report_Role</value>
+				<value>com.chinarewards.posnet2.report.domain.User</value>
+				<value>com.chinarewards.posnet2.report.domain.Role</value>
+				<value>com.chinarewards.posnet2.report.domain.User_Role</value>
+				<value>com.chinarewards.posnet2.report.domain.Authorities</value>
+				<value>com.chinarewards.posnet2.report.domain.Role_Authorities</value>
 			</list>
 		</property>
 

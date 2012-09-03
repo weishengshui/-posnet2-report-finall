@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import com.chinarewards.posnet2.report.dao.user.ActivityDao;
 import com.chinarewards.posnet2.report.dao.user.UserDao;
 import com.chinarewards.posnet2.report.domain.Activity;
-import com.chinarewards.posnet2.report.domain.Report_User;
+import com.chinarewards.posnet2.report.domain.User;
 import com.chinarewards.posnet2.report.exception.DaoLevelException;
 import com.chinarewards.posnet2.report.exception.ServiceLevelException;
 
@@ -31,20 +31,16 @@ public class LoginServiceImpl implements LoginService {
 	}
 	
 	@Override
-	public boolean isRightUsernamePwd(String username, String password) throws ServiceLevelException{
-		logger.debug("loginService.isRightUsernamePwd({},{})",new Object[]{username,password});
-		try {
-			Report_User report_User = userDao.getUserByUsername(username);
+	public User getUserByUsernamePwd(String username, String password) throws ServiceLevelException{
+		logger.debug("loginService.getUserByUsernamePwd({},{})",new Object[]{username,password});
+			User report_User = userDao.getById(User.class, username);
 			if(report_User==null){
-				return false;
+				return null;
 			}
-			if(password!=null && password.equals(report_User.getPassword()) && report_User.isEnable()){
-				return true;
+			if(password!=null && password.equals(report_User.getPassword()) && report_User.isEnabled()){
+				return null;
 			}
-			return false;
-		} catch (DaoLevelException e) {
-			throw new ServiceLevelException(e);
-		}
+			return report_User;
 	}
 
 	public ActivityDao getActivityDao() {

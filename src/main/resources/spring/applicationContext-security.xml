@@ -11,37 +11,60 @@
 
 		<!-- 查看明细报表的权限 -->
 		<intercept-url pattern="/view/qqmeishi/detail*" access="hasRole('report_detail')" />
-
 		<!-- 查看验证码使用情况的权限 -->
 		<intercept-url pattern="/view/qqmeishi/tokenUse*"
 			access="hasRole('report_token')" />
-
 		<!-- 查看总计报表的权限 -->
 		<intercept-url pattern="/view/qqmeishi/totalStatements*"
 			access="hasRole('report_total')" />
 
+		<custom-filter before="FORM_LOGIN_FILTER" ref="validateCodeAuthenticationFilter" />
 
 		<intercept-url pattern="/**" access="permitAll" />
+		
+		<form-login login-page="/pub/index.jsp" default-target-url="/view/qqmeishi/reportTemplateMainframe.action"
+		     always-use-default-target="true"
+		     authentication-failure-url="/pub/index.jsp?error=true"/>
+		
 		<session-management>
-			<concurrency-control max-sessions="1"
+			<concurrency-control max-sessions="1" 
 				expired-url="/" />
 		</session-management>
 	</http>
 
-	<authentication-manager alias="authenticationManager">
 	
+	<authentication-manager alias="authenticationManager">
 		<authentication-provider>
 			<jdbc-user-service data-source-ref="posnet2ReportDataSource" 
-				users-by-username-query=""
-				authorities-by-username-query=""/>
-			<user-service>
-				<user name="admin" password="admin" authorities="report_detail, report_token, report_total" />
-				<user name="detail" password="detail" authorities="report_detail" />
-				<user name="token" password="token" authorities="report_token" />
-				<user name="total" password="total" authorities="report_total" />
-				<user name="mix" password="mix" authorities="report_detail, report_token" />
-			</user-service>
+				users-by-username-query="SELECT username,password, enabled as status FROM report_user WHERE username=?"
+				authorities-by-username-query="SELECT u.username, a.authority AS authority FROM report_user u, report_authorities a,
+report_user_role ur,report_role_authorities ra,report_role r 
+WHERE u.username=ur.username and ur.rolename=r.rolename and r.rolename=ra.rolename and ra.authority=a.authority and u.username=?"/>
 		</authentication-provider>
 	</authentication-manager>
-
+	
+	 <!-- 登录过滤器：包括用户名、密码、验证码的验证 -->  
+	 <beans:bean id="validateCodeAuthenticationFilter"  
+	  class="com.chinarewards.posnet2.report.filter.ValidateCodeUsernamePasswordAuthenticationFilter">  
+	  <beans:property name="authenticationSuccessHandler"  
+	   ref="loginLogAuthenticationSuccessHandler"></beans:property>  
+	  <beans:property name="authenticationFailureHandler"  
+	   ref="simpleUrlAuthenticationFailureHandler"></beans:property>  
+	  <beans:property name="authenticationManager" ref="authenticationManager"></beans:property>  
+	  <beans:property name="loginService" ref="loginService"></beans:property>
+	 </beans:bean> 
+ 
+  <!-- 登录成功 -->  
+	 <beans:bean id="loginLogAuthenticationSuccessHandler"  
+	  class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">  
+	  <beans:property name="defaultTargetUrl" value="/view/qqmeishi/reportTemplateMainframe.action"></beans:property> 
+	  <beans:property name="alwaysUseDefaultTargetUrl" value="true"></beans:property> 
+	 </beans:bean> 
+ 
+ <!-- 登录失败 -->  
+	 <beans:bean id="simpleUrlAuthenticationFailureHandler"  
+	  class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">  
+	  <beans:property name="defaultFailureUrl" value="/pub/index.jsp?error=true"></beans:property>  
+	 </beans:bean> 
+	
 </beans:beans>

@@ -15,7 +15,7 @@
 		<property name="activityDao">
 			<ref bean="activityDao" />
 		</property>
-		<property name="userDao" ref="userDao" />
+ 		<property name="userDao" ref="userDao" /> 
 	</bean>
 
 </beans>
