@@ -7,18 +7,20 @@
 	<package name="user_Package" extends="default" namespace="/pub">
 
 
-		<action name="login" class="loginAction" method="login">
-			<result name="success" type="redirectAction">
-				<param name="namespace">/view/qqmeishi</param>
-				<param name="actionName">reportTemplateMainframe</param>
-			</result>
-			<result name="input">/pub/index.jsp</result>
-		</action>
+<!--		<action name="login" class="loginAction" method="login">-->
+<!--			<result name="success" type="redirectAction">-->
+<!--				<param name="namespace">/view/qqmeishi</param>-->
+<!--				<param name="actionName">reportTemplateMainframe</param>-->
+<!--			</result>-->
+<!--			<result name="input">/pub/index.jsp</result>-->
+<!--		</action>-->
 
 		<action name="logout">
 			<result>/pub/logout.jsp</result>
 		</action>
-		<!-- <action name="user_login" class="loginAction" method="userLogin"> -->
+		
+		
+		<!-- <action name=			"user_login" class="loginAction" method="userLogin"> -->
 		<!-- <result name="success">/WEB-INF/jsp/login_test.jsp</result> -->
 		<!-- </action> -->
 		<!-- -->
@@ -52,5 +54,7 @@
 		<!-- </action> -->
 
 	</package>
+	
+	
 
 </struts>

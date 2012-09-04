@@ -26,6 +26,8 @@
 		</bean>
 		
 		<bean id="templateAction" class="com.chinarewards.posnet2.report.action.ReportTemplateAction" scope="prototype">
+			<property name="loginService" ref="loginService" />
+			<property name="reportService" ref="reportService" />
 		</bean>
 	
 	

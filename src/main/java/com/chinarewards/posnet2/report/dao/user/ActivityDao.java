@@ -28,8 +28,6 @@ public class ActivityDao extends BaseDao<Activity> {
 		}
 	}
 	
-	public Activity getActivityById(String id){
-		return null;
-	}
+	
 
 }

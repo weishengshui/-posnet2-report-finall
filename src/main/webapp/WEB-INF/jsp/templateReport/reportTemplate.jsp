@@ -1,8 +1,7 @@
-<%@page import="java.net.URLDecoder"%>
-<%@page import="java.net.URL"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/checklogin.jsp" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 
 <html>
 <head>
@@ -12,11 +11,6 @@
 
 <body>
 
-<script>
-	if (parent.document.getElementById('mainframe').cols != "20%,80%") {
-		parent.document.getElementById('mainframe').cols = "20%,80%";
-	}
-</script>
 <div align="center">
 <div class="box_001 edge_001">
 
@@ -28,7 +22,7 @@
 
 			
 			<li class="edge_003" onclick="javascript:clickMenu('Layer3');">
-			<h2>海岸城七月活动</h2>
+			<h2><s:property value="activity_name"/></h2>
 			
 			<div id="Layer3" class="list" style="display: none">
 			<%

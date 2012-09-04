@@ -17,5 +17,9 @@
 		</property>
  		<property name="userDao" ref="userDao" /> 
 	</bean>
+	
+	<bean id="reportService" class="com.chinarewards.posnet2.report.service.user.ReportServiceImpl">
+		<property name="reportDao" ref="reportDao"/>
+	</bean>
 
 </beans>

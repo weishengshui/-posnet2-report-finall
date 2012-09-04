@@ -12,11 +12,10 @@ import com.chinarewards.posnet2.report.domain.User;
 import com.chinarewards.posnet2.report.exception.DaoLevelException;
 import com.chinarewards.posnet2.report.exception.ServiceLevelException;
 
-
 public class LoginServiceImpl implements LoginService {
-	
+
 	private Logger logger = LoggerFactory.getLogger(getClass());
-	
+
 	private ActivityDao activityDao;
 	private UserDao userDao;
 
@@ -29,18 +28,24 @@ public class LoginServiceImpl implements LoginService {
 			throw new ServiceLevelException(e);
 		}
 	}
-	
+
 	@Override
-	public User getUserByUsernamePwd(String username, String password) throws ServiceLevelException{
-		logger.debug("loginService.getUserByUsernamePwd({},{})",new Object[]{username,password});
-			User report_User = userDao.getById(User.class, username);
-			if(report_User==null){
-				return null;
-			}
-			if(password!=null && password.equals(report_User.getPassword()) && report_User.isEnabled()){
-				return null;
-			}
-			return report_User;
+	public Activity getActivityById(String id) throws ServiceLevelException {
+		logger.debug("loginService.getActivityById({})", id);
+		Activity activity = activityDao.getById(Activity.class, id);
+		return activity;
+	}
+
+	@Override
+	public User getUserByUsernamePwd(String username, String password)
+			throws ServiceLevelException {
+		logger.debug("loginService.getUserByUsernamePwd({},{})", new Object[] {
+				username, password });
+		User report_User = userDao.getById(User.class, username);
+		if (report_User == null) {
+			return null;
+		}
+		return report_User;
 	}
 
 	public ActivityDao getActivityDao() {
@@ -58,7 +63,5 @@ public class LoginServiceImpl implements LoginService {
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
 	}
-	
-	
-	
+
 }

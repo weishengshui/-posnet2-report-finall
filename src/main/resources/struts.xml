@@ -5,45 +5,40 @@
 
 <struts>
 
-	<!--
-		Constant section BEGINS 
-	 -->
+	<!-- Constant section BEGINS -->
 
 	<!-- Enable Struts debugging. -->
 	<!-- FIXME disable this for production -->
 	<constant name="struts.devMode" value="false" />
 	<constant name="struts.custom.i18n.resources" value="global-messages" />
 
-	<!--
-		Our default package. All packages should extends this instead of
-		struts-defaults.
-	-->
-	<package name="default" extends="struts-default,json-default,jasperreports-default" abstract="true">
+	<!-- Our default package. All packages should extends this instead of struts-defaults. -->
+	<package name="default"
+		extends="struts-default,json-default,jasperreports-default" abstract="true">
 		<interceptors>
 			<interceptor name="logenabledException"
 				class="com.opensymphony.xwork2.interceptor.ExceptionMappingInterceptor">
 				<param name="logEnabled">true</param>
 			</interceptor>
-			
-			<!-- 
-			<interceptor name="login" class="loginCheckInterceptor" />
-			<interceptor name="menu" class="menuProcessInterceptor"></interceptor>
-			 -->
-			 
+
+			<interceptor name="checkLogin"
+				class="com.chinarewards.posnet2.report.interceptor.CheckLoginInterceptor" />
+
+			<!-- <interceptor name="login" class="loginCheckInterceptor" /> <interceptor 
+				name="menu" class="menuProcessInterceptor"></interceptor> -->
+
 			<interceptor-stack name="crStack">
 				<interceptor-ref name="logenabledException">
 					<param name="logEnabled">true</param>
 					<param name="logLevel">error</param>
 				</interceptor-ref>
+				<interceptor-ref name="checkLogin" />
 				<interceptor-ref name="alias" />
 				<interceptor-ref name="servletConfig" />
 				<interceptor-ref name="i18n" />
 				<interceptor-ref name="prepare" />
-				<!--
-					ChainInterceptor is disabled. See
-					https://redmine.dev.jifen.cc/projects/tiger/wiki/%E5%BC%80%E5%8F%91%E6%B3%A8%E6%84%8F#Struts
-					for details.
-				-->
+				<!-- ChainInterceptor is disabled. See https://redmine.dev.jifen.cc/projects/tiger/wiki/%E5%BC%80%E5%8F%91%E6%B3%A8%E6%84%8F#Struts 
+					for details. -->
 				<!-- <interceptor-ref name="chain"/> -->
 				<interceptor-ref name="debugging" />
 				<interceptor-ref name="profiling" />
@@ -68,13 +63,20 @@
 			</interceptor-stack>
 
 		</interceptors>
-		
-		<default-interceptor-ref name="crStack"/>
 
+		<default-interceptor-ref name="crStack" />
+		
+		<global-results>
+			<result name="login">/pub/index.jsp</result>
+		</global-results>
+		
 		<global-exception-mappings>
 			<!-- General error -->
-			<exception-mapping result="runtimeException" exception="java.lang.RuntimeException" />
+			<exception-mapping result="runtimeException"
+				exception="java.lang.RuntimeException" />
 		</global-exception-mappings>
+
+
 
 	</package>
 

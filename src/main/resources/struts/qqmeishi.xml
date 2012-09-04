@@ -25,8 +25,9 @@
 		 </action>
 		 
 		 <!-- 总计报表的资源文件 -->
-		 <action name="totalStatements">
-		 	<result>/WEB-INF/jsp/templateReport/totalStatementsTemplate.jsp</result>
+		 <action name="totalStatements" method="totalStatements" class="templateAction">
+		 	<result name="success">/WEB-INF/jsp/templateReport/totalStatementsTemplate.jsp</result>
+		 	<result name="input">/WEB-INF/jsp/templateReport/totalStatementsTemplate.jsp</result>
 		 </action>
 		 
 		 <!-- token码使用情况资源文件 -->
@@ -35,13 +36,13 @@
 		 </action>
 		 
 		 <!-- 进入报表模板的总框架文件 -->
-		 <action name="reportTemplateMainframe" class="templateAction">
+		 <action name="reportTemplateMainframe">
 			<result name="success">/WEB-INF/jsp/templateReport/report_mainframe.jsp</result>
 		</action>
 		<action name="reportEmpty">
 			<result>/WEB-INF/jsp/templateReport/empty.jsp</result>
 		</action>
-		<action name="reportTemplate">
+		<action name="reportTemplate"  class="templateAction">
 			<result>/WEB-INF/jsp/templateReport/reportTemplate.jsp</result>
 		</action>
 	</package>

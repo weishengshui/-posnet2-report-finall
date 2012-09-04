@@ -12,4 +12,5 @@ public interface LoginService {
 	
 	public User getUserByUsernamePwd(String username, String password)throws ServiceLevelException;
 	
+	public Activity getActivityById(String id)throws ServiceLevelException;
 }
