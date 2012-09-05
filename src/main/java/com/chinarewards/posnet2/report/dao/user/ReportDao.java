@@ -17,6 +17,9 @@ import com.chinarewards.posnet2.report.dao.BaseDao;
 import com.chinarewards.posnet2.report.vo.DayAmount;
 import com.chinarewards.posnet2.report.vo.DayCount;
 import com.chinarewards.posnet2.report.vo.EverydayRecordVo;
+import com.chinarewards.posnet2.report.vo.MerchantExRecord;
+import com.chinarewards.posnet2.report.vo.MerchantExRecordVo;
+import com.chinarewards.posnet2.report.vo.PosTypeCountVo;
 import com.chinarewards.posnet2.report.vo.Weekend;
 
 public class ReportDao extends BaseDao<Object> {
@@ -144,6 +147,55 @@ public class ReportDao extends BaseDao<Object> {
 			}
 		}
 		return everydayRecords;
+	}
+	
+    public	List<MerchantExRecordVo> getMerchantTotalByExType(String sDate, String eDate, String activity_id, String exType){
+    	logger.debug("call getMerchantTotalByExType({}, {}, {},{})", new Object[] {
+				sDate, eDate, activity_id,exType });
+		StringBuffer sql = new StringBuffer();
+    	sql.append("select m1.id as id, m1.Merchant_name as shopName, sum((select count(*)  from QQMeishiXaction mshi1  ");
+    	sql = concatLimitTime(sql, "mshi1.ts", sDate, eDate);
+    	sql.append(" and mshi1.xactResultCode = '0' and mshi1.posid = am1.posid)) as exCount, ");
+    	sql.append(" sum((select sum(mshi1.consumeAmount) from QQMeishiXaction mshi1 ");
+    	sql = concatLimitTime(sql, "mshi1.ts", sDate, eDate);
+    	sql.append(" and mshi1.xactResultCode = '0' and mshi1.posid = am1.posid )) as amount ");
+    	sql.append(" from Merchant m1, Activitymerchant am1   where am1.merchant_id = m1.id  and  am1.activity_id=:activity_id ");
+    	sql.append(" and m1.exchangeType=:exchangeType   group by m1.id ");
+    	logger.trace(sql.toString());
+    	SQLQuery q = getSession().createSQLQuery(sql.toString());
+    	q.setParameter("activity_id", activity_id);
+    	q.setParameter("exchangeType", exType);
+    	q.addScalar("id", Hibernate.STRING);
+    	q.addScalar("shopName", Hibernate.STRING);
+    	q.addScalar("exCount", Hibernate.INTEGER);
+    	q.addScalar("amount", Hibernate.DOUBLE);
+//    	q.addScalar("posTypeCounts", Hibernate.custom(PosTypeCountVo.class));
+    	q.setResultTransformer(Transformers.aliasToBean(MerchantExRecord.class));
+    	List<MerchantExRecord> vos = q.list();
+    	if(vos==null || vos.size()==0){
+    		return null;
+    	}
+    	List<MerchantExRecordVo> merchantExRecordVos = new ArrayList<MerchantExRecordVo>();
+    	for(MerchantExRecord vo:vos){
+    		sql = new StringBuffer();
+    		sql.append("select am1.posid as posid, "+exType+"  as 'type', (select count(*) from QQMeishiXaction mshi  ");
+    		sql = concatLimitTime(sql, "mshi.ts", sDate, eDate);
+    		sql.append(" and mshi.xactResultCode = 0 and am1.posid = mshi.posid) as 'count'  from Activitymerchant am1 where am1.Merchant_id=:Merchant_id");
+    		logger.trace(sql.toString());
+    		q = getSession().createSQLQuery(sql.toString());
+    		q.setParameter("Merchant_id", vo.getId());
+    		q.addScalar("posid", Hibernate.STRING);
+    		q.addScalar("type", Hibernate.STRING);
+    		q.addScalar("count", Hibernate.INTEGER);
+    		q.setResultTransformer(Transformers.aliasToBean(PosTypeCountVo.class));
+    		List<PosTypeCountVo> pvos = q.list();
+    		MerchantExRecordVo merchantExRecordVo = new MerchantExRecordVo();
+    		merchantExRecordVo.setMerchantExRecord(vo);
+    		merchantExRecordVo.setPosTypeCounts(pvos);
+    		merchantExRecordVos.add(merchantExRecordVo);
+    	}
+    	
+    	return merchantExRecordVos;
 	}
 	
 	public List<String> getExchangeTypes(String activity_id){

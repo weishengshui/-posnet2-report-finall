@@ -1,6 +1,8 @@
 package com.chinarewards.posnet2.report.vo;
 
-public class PosTypeCountVo {
+
+
+public class PosTypeCountVo  {
 	
 	private String posid;
 	private String type;
@@ -25,6 +27,5 @@ public class PosTypeCountVo {
 	public void setCount(Integer count) {
 		this.count = count;
 	}
-	
 	
 }

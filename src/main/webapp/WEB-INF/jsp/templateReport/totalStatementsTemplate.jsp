@@ -130,6 +130,54 @@
 <span>每日报表没有数据显示</span>
 </s:else>
 
+<br>
+<s:if test="merchantTotalExists">
+	<s:iterator value="merchantTotal" id="t" status="s">
+		<s:if test="#s.first">
+			<h2>商户报表(<s:property value="key"/>)</h2>
+		</s:if>
+		<table>
+		<s:if test="#s.first">
+			<tr>
+				<td>序号</td>
+				<td>商户名称</td>
+				<td><s:property value="key"/>总数</td>
+				<td>消费总金额</td>
+				<td>POS机编号 | 交易类型 | 交易次数</td>
+			</tr>
+		</s:if>
+		<s:iterator value="#t.value" id="mvo" status="ms">
+			<tr>
+				<td><s:property value="#ms.count"/></td>
+				<td><s:property value="#mvo.shopName" /></td>
+				<td><s:property value="#mvo.exCount"/></td>
+				<td><s:property value="#mvo.amount"/></td>
+				<td>
+					<s:iterator value="#mvo.posTypeCounts" id="pvo">
+						<s:property value="#pvo.posid"/> | <s:property value="#pvo.type"/> | <s:property value="#pvo.count"/><br> 						
+					</s:iterator>
+				</td>
+			</tr>
+		</s:iterator>
+		</table>
+	</s:iterator>
+	
+	<table>
+		<s:iterator value="merchantTotalGraph">
+		<tr>
+			<td>
+				<img alt="" src="<s:property/>">	
+			</td>
+		</tr>
+		<tr><td></td></tr>
+	</s:iterator>
+	</table>
+</s:if>
+<s:else>
+<h2>商户总计报表</h2>
+<span>商户总计报表没有数据显示</span>
+</s:else>
+
 
 
 <br>

@@ -1,37 +1,41 @@
 package com.chinarewards.posnet2.report.vo;
 
+import java.util.List;
+
+import javax.persistence.Transient;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.OptimisticLockType;
+import org.hibernate.annotations.PolymorphismType;
+import org.hibernate.annotations.Proxy;
+
 public class MerchantExRecordVo {
 	
-	private String shopName;
-	private Integer exCount;
-	private Double amount;
-	private PosTypeCountVo posTypeCount;
+	private MerchantExRecord merchantExRecord;
+	
+	private List<PosTypeCountVo> posTypeCounts;
+	
 	public MerchantExRecordVo() {
 	}
-	public String getShopName() {
-		return shopName;
+
+	public MerchantExRecord getMerchantExRecord() {
+		return merchantExRecord;
 	}
-	public void setShopName(String shopName) {
-		this.shopName = shopName;
+
+	public void setMerchantExRecord(MerchantExRecord merchantExRecord) {
+		this.merchantExRecord = merchantExRecord;
 	}
-	public Integer getExCount() {
-		return exCount;
+
+	public List<PosTypeCountVo> getPosTypeCounts() {
+		return posTypeCounts;
 	}
-	public void setExCount(Integer exCount) {
-		this.exCount = exCount;
+
+	public void setPosTypeCounts(List<PosTypeCountVo> posTypeCounts) {
+		this.posTypeCounts = posTypeCounts;
 	}
-	public Double getAmount() {
-		return amount;
-	}
-	public void setAmount(Double amount) {
-		this.amount = amount;
-	}
-	public PosTypeCountVo getPosTypeCount() {
-		return posTypeCount;
-	}
-	public void setPosTypeCount(PosTypeCountVo posTypeCount) {
-		this.posTypeCount = posTypeCount;
-	}
+	
+	
 	
 	
 	

@@ -31,6 +31,8 @@ import com.chinarewards.posnet2.report.domain.User;
 import com.chinarewards.posnet2.report.service.user.LoginService;
 import com.chinarewards.posnet2.report.service.user.ReportService;
 import com.chinarewards.posnet2.report.vo.EverydayRecordVo;
+import com.chinarewards.posnet2.report.vo.MerchantExRecord;
+import com.chinarewards.posnet2.report.vo.MerchantExRecordVo;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ReportTemplateAction extends ActionSupport {
@@ -45,6 +47,9 @@ public class ReportTemplateAction extends ActionSupport {
 	private Map<String, EverydayRecordVo> everydayTotal;//每日报表
 	private List<String> everydayGraphs;//每日报表的统计图表
 	private boolean everydayTotalExists = true;//每日总计是否有数据
+	private Map<String,List<MerchantExRecordVo>> merchantTotal;//商户总计报表
+	private boolean merchantTotalExists = true;
+	private List<String> merchantTotalGraph;
 	private List<String> exchTypes;
 	
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
@@ -96,13 +101,18 @@ public class ReportTemplateAction extends ActionSupport {
 		return everydayTotalExists;
 	}
 	
+	public List<String> getMerchantTotalGraph() {
+		return merchantTotalGraph;
+	}
+	public void setMerchantTotalGraph(List<String> merchantTotalGraph) {
+		this.merchantTotalGraph = merchantTotalGraph;
+	}
 	public List<String> getExchTypes() {
 		return exchTypes;
 	}
 	public void setExchTypes(List<String> exchTypes) {
 		this.exchTypes = exchTypes;
 	}
-	
 	public List<String> getEverydayGraphs() {
 		return everydayGraphs;
 	}
@@ -111,6 +121,19 @@ public class ReportTemplateAction extends ActionSupport {
 	}
 	public void setEverydayTotalExists(boolean everydayTotalExists) {
 		this.everydayTotalExists = everydayTotalExists;
+	}
+	
+	public Map<String, List<MerchantExRecordVo>> getMerchantTotal() {
+		return merchantTotal;
+	}
+	public void setMerchantTotal(Map<String, List<MerchantExRecordVo>> merchantTotal) {
+		this.merchantTotal = merchantTotal;
+	}
+	public boolean isMerchantTotalExists() {
+		return merchantTotalExists;
+	}
+	public void setMerchantTotalExists(boolean merchantTotalExists) {
+		this.merchantTotalExists = merchantTotalExists;
 	}
 	public LoginService getLoginService() {
 		return loginService;
@@ -148,10 +171,13 @@ public class ReportTemplateAction extends ActionSupport {
 			endDate = dateToString(activity.getEndDate()) ;
 		}else{
 			exchTypes = reportService.getExchTypes(activity_id);
-		    total =  reportService.getTotalStatement(startDate, getToDate(endDate), activity_id);
+		    //历史总计
+			total =  reportService.getTotalStatement(startDate, getToDate(endDate), activity_id);
 		    if(total==null || total.size()==0){
 		    	totalExists = false;
 		    }
+		    
+		    //每日报表
 		    everydayTotal = reportService.getEverydayStatement(startDate, getToDate(endDate), activity_id);
 		    if(everydayTotal == null || everydayTotal.size()==0){
 		    	everydayTotalExists = false;
@@ -253,6 +279,39 @@ public class ReportTemplateAction extends ActionSupport {
 				everydayGraphs.add(ServletActionContext.getServletContext().getContextPath()+"/servlet/displayChart?filename="+filename);
 		    }
 		    
+		    //商户总计报表
+		    merchantTotal = reportService.getMerchantTotal(startDate, getToDate(endDate), activity_id);
+		    if(merchantTotal==null || merchantTotal.size()==0){
+		    	merchantTotalExists=false;
+		    }else{
+		    	
+		    	for(String exType:exchTypes){
+//		    		int countSum=0;
+//		    		double amountSum=0;
+//		    		int posSum = 0;
+		    		DefaultCategoryDataset dataset = new DefaultCategoryDataset();//交易数量
+			    	DefaultCategoryDataset amountDataset = new DefaultCategoryDataset();//消费金额
+		    		List<MerchantExRecordVo> vos = merchantTotal.get(exType);
+		    		if(vos!=null&& vos.size()>=5){
+		    			for(MerchantExRecordVo vo:vos){
+		    				MerchantExRecord merchantExRecord = vo.getMerchantExRecord();
+		    				String shopName = merchantExRecord.getShopName();
+		    				dataset.addValue(merchantExRecord.getExCount(), shopName, shopName);
+		    				amountDataset.addValue(merchantExRecord.getAmount(), shopName, shopName);
+		    			}
+		    			JFreeChart chart = ChartFactory.createBarChart(activity_name+"("+exType+")", "", "交易数量", dataset, PlotOrientation.VERTICAL, false, false, false);
+		    			setBarChartProperties(chart, font);
+		    			String filename = ServletUtilities.saveChartAsJPEG(chart, 800, 600, session);
+		    			merchantTotalGraph.add(ServletActionContext.getServletContext().getContextPath()+"/servlet/displayChart?filename="+filename);
+		    			chart = ChartFactory.createBarChart(activity_name+"("+exType+")", "", "金额", amountDataset, PlotOrientation.VERTICAL, false, false, false);
+		    			setBarChartProperties(chart, font);
+		    			filename = ServletUtilities.saveChartAsJPEG(chart, 800, 600, session);
+		    			merchantTotalGraph.add(ServletActionContext.getServletContext().getContextPath()+"/servlet/displayChart?filename="+filename);
+		    		}
+		    	}
+		    	
+		    	
+		    }
 		    
 		}
 		logger.debug("startDate={}, endDate={}",new Object[]{startDate,endDate});
