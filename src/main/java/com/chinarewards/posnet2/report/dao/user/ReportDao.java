@@ -8,14 +8,18 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.hibernate.Hibernate;
+import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.transform.Transformers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.chinarewards.posnet2.report.dao.BaseDao;
+import com.chinarewards.posnet2.report.domain.User;
+import com.chinarewards.posnet2.report.exception.DaoLevelException;
 import com.chinarewards.posnet2.report.vo.DayAmount;
 import com.chinarewards.posnet2.report.vo.DayCount;
+import com.chinarewards.posnet2.report.vo.DetailExchRecord;
 import com.chinarewards.posnet2.report.vo.EverydayRecordVo;
 import com.chinarewards.posnet2.report.vo.MerchantExRecord;
 import com.chinarewards.posnet2.report.vo.MerchantExRecordVo;
@@ -178,9 +182,9 @@ public class ReportDao extends BaseDao<Object> {
     	List<MerchantExRecordVo> merchantExRecordVos = new ArrayList<MerchantExRecordVo>();
     	for(MerchantExRecord vo:vos){
     		sql = new StringBuffer();
-    		sql.append("select am1.posid as posid, "+exType+"  as 'type', (select count(*) from QQMeishiXaction mshi  ");
+    		sql.append("select am1.posid as posid, '"+exType+"'  as 'type', (select count(*) from QQMeishiXaction mshi  ");
     		sql = concatLimitTime(sql, "mshi.ts", sDate, eDate);
-    		sql.append(" and mshi.xactResultCode = 0 and am1.posid = mshi.posid) as 'count'  from Activitymerchant am1 where am1.Merchant_id=:Merchant_id");
+    		sql.append(" and mshi.xactResultCode = '0' and am1.posid = mshi.posid) as 'count'  from Activitymerchant am1 where am1.Merchant_id=:Merchant_id");
     		logger.trace(sql.toString());
     		q = getSession().createSQLQuery(sql.toString());
     		q.setParameter("Merchant_id", vo.getId());
@@ -197,6 +201,35 @@ public class ReportDao extends BaseDao<Object> {
     	
     	return merchantExRecordVos;
 	}
+    
+    public DetailExchRecord getDetailExchRecordByTokenAndActivityId (
+			String activity_id, String token) throws DaoLevelException{
+    	logger.debug("call getDetailExchRecordByTokenAndActivityId({}, {})", new Object[] {
+				 activity_id,token });
+		StringBuffer sql = new StringBuffer();
+		sql.append(" select m1.merchant_name as 'shopName',a1.posid as 'posid',mshi.qqUserToken as 'token',mshi.consumeAmount as 'amount', ");
+		sql.append(" mshi.ts as 'time'  from Merchant m1,Activitymerchant a1,QQMeishiXaction mshi   where mshi.qqUserToken=:qqUserToken ");
+		sql.append(" and a1.activity_id=:activity_id  and mshi.xactResultCode = '0' and mshi.posid = a1.posid and a1.merchant_id = m1.id ");
+		logger.trace(sql.toString());
+		try {
+			SQLQuery q = getSession().createSQLQuery(sql.toString());
+			q.setParameter("qqUserToken", token);
+			q.setParameter("activity_id", activity_id);
+			q.addScalar("shopName", Hibernate.STRING);
+			q.addScalar("posid", Hibernate.STRING);
+			q.addScalar("token", Hibernate.STRING);
+			q.addScalar("amount", Hibernate.DOUBLE);
+			q.addScalar("time", Hibernate.STRING);
+			q.setResultTransformer(Transformers.aliasToBean(DetailExchRecord.class));
+			List<DetailExchRecord> vos = q.list();
+			if(vos==null || vos.size()==0){
+				return null;
+			}
+			return vos.get(0);
+		} catch (Throwable e) {
+			throw new DaoLevelException(e);
+		}
+    }
 	
 	public List<String> getExchangeTypes(String activity_id){
 		logger.debug("call getExchangeTypes({})", 

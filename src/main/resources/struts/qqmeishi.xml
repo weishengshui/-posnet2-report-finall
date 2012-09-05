@@ -31,8 +31,9 @@
 		 </action>
 		 
 		 <!-- token码使用情况资源文件 -->
-		 <action name="tokenUse">
-		 	<result>/WEB-INF/jsp/templateReport/userTokenQueryTemplate.jsp</result>
+		 <action name="tokenUse" class="userToken">
+		 	<result name="success">/WEB-INF/jsp/templateReport/userTokenQueryTemplate.jsp</result>
+		 	<result name="input">/WEB-INF/jsp/templateReport/userTokenQueryTemplate.jsp</result>
 		 </action>
 		 
 		 <!-- 进入报表模板的总框架文件 -->

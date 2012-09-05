@@ -1,21 +1,11 @@
 package com.chinarewards.posnet2.report.vo;
 
-import java.util.List;
-
-import javax.persistence.Transient;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.OptimisticLockType;
-import org.hibernate.annotations.PolymorphismType;
-import org.hibernate.annotations.Proxy;
-
 public class MerchantExRecord {
 	
 	private String id;
 	private String shopName;
 	private Integer exCount;
-	private Double amount;
+	private Double amount = 0.0;
 	
 	
 	public MerchantExRecord() {

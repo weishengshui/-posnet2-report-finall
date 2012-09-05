@@ -5,8 +5,9 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.chinarewards.posnet2.report.dao.user.ReportDao;
+import com.chinarewards.posnet2.report.exception.DaoLevelException;
+import com.chinarewards.posnet2.report.vo.DetailExchRecord;
 import com.chinarewards.posnet2.report.vo.EverydayRecordVo;
-import com.chinarewards.posnet2.report.vo.MerchantExRecord;
 import com.chinarewards.posnet2.report.vo.MerchantExRecordVo;
 
 public class ReportServiceImpl implements ReportService {
@@ -39,6 +40,13 @@ public class ReportServiceImpl implements ReportService {
 			return null;
 		}
 		return merchantTotalMap;
+	}
+	
+	@Override
+	public DetailExchRecord getDetailExchRecordByTokenAndActivityId(
+			String activity_id, String token) throws DaoLevelException{
+		
+		return reportDao.getDetailExchRecordByTokenAndActivityId(activity_id, token);
 	}
 	
 	@Override

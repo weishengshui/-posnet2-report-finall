@@ -29,6 +29,9 @@
 			<property name="loginService" ref="loginService" />
 			<property name="reportService" ref="reportService" />
 		</bean>
+		<bean id="userToken" class="com.chinarewards.posnet2.report.action.TokenAction" scope="prototype">
+			<property name="reportService" ref="reportService" />
+		</bean>
 	
 	
 

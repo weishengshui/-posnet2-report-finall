@@ -54,6 +54,7 @@
 </form>
 <s:actionerror cssStyle="color:red" />
 
+<s:if test="cmdExists">
 <!-- 总计报表 -->
 <s:if test="totalExists">
 	<table border="1">
@@ -80,10 +81,12 @@
 <!--</s:iterator>-->
 
 <br>
-<h2>每日报表</h2>
+
 
 <s:if test="everydayTotalExists">
+<h2>每日报表</h2>
 <table border="1">
+	<s:set var="amount" value="0"/><!-- 消费金额总计 -->
 	<s:iterator value="everydayTotal" id="et" status="st">
 		<s:if test="#st.first">
 		<tr>
@@ -108,11 +111,31 @@
 				<td><s:property value="#vo.weekday"/></td>
 			</s:else>
 			<s:iterator value="#vo.count" id="count">
-				<td><s:property /></td>
+				<td>
+					<s:property value="#count" />
+				</td>
 			</s:iterator>
-			<td><s:property value="#vo.amount"/></td>
+			<td>
+				<s:if test="#vo.amount!=null">
+				<s:set var="amount" value="#amount + #vo.amount"/>
+				</s:if>
+				<s:property value="#vo.amount"/>
+			</td>
 		</s:iterator>
 		</tr>
+		<s:if test="#st.last">
+			<tr>
+				<td colspan="3" align="center">总计</td>
+				<s:iterator value="total" status="id">
+					<td width='80'><s:property value="total[#id.index][1]" /></td>
+				</s:iterator>
+				<td>
+					<s:text name="format.number">
+    					<s:param value="#amount"/>
+    				</s:text>
+				</td>
+			</tr>
+		</s:if>
 	</s:iterator>
 </table>
 <table>
@@ -127,17 +150,20 @@
 </table>
 </s:if>
 <s:else>
+<br>
+<h2>每日报表</h2>
 <span>每日报表没有数据显示</span>
 </s:else>
 
 <br>
 <s:if test="merchantTotalExists">
+
 	<s:iterator value="merchantTotal" id="t" status="s">
-		<s:if test="#s.first">
-			<h2>商户报表(<s:property value="key"/>)</h2>
-		</s:if>
-		<table>
-		<s:if test="#s.first">
+		<s:set var="exc" value="0" />
+	<s:set var="amo" value="0" />
+	<s:set var="pcou" value="0" />
+				<h2>商户报表(<s:property value="key"/>)</h2>
+			<table>
 			<tr>
 				<td>序号</td>
 				<td>商户名称</td>
@@ -145,20 +171,50 @@
 				<td>消费总金额</td>
 				<td>POS机编号 | 交易类型 | 交易次数</td>
 			</tr>
-		</s:if>
+		
 		<s:iterator value="#t.value" id="mvo" status="ms">
 			<tr>
 				<td><s:property value="#ms.count"/></td>
-				<td><s:property value="#mvo.shopName" /></td>
-				<td><s:property value="#mvo.exCount"/></td>
-				<td><s:property value="#mvo.amount"/></td>
+				<td><s:property value="#mvo.merchantExRecord.shopName" /></td>
 				<td>
-					<s:iterator value="#mvo.posTypeCounts" id="pvo">
-						<s:property value="#pvo.posid"/> | <s:property value="#pvo.type"/> | <s:property value="#pvo.count"/><br> 						
-					</s:iterator>
+					<s:if test="#mvo.merchantExRecord.exCount!=null">
+						<s:property value="#mvo.merchantExRecord.exCount"/>
+					<s:set var="exc" value="#exc + #mvo.merchantExRecord.exCount" />
+					</s:if>
+				</td>
+				<td>
+					<s:if test="#mvo.merchantExRecord.amount!=null">
+						<s:property value="#mvo.merchantExRecord.amount"/>
+						<s:set var="amo" value="#amo + #mvo.merchantExRecord.amount" />
+					</s:if>
+					<s:else>
+						0.0
+					</s:else>
+				</td>
+				<td>
+					<s:if test="#mvo.posTypeCounts!=null">
+						<s:set var="pcou" value="#pcou + #mvo.posTypeCounts.size()" />
+						<s:iterator value="#mvo.posTypeCounts" id="pvo">
+							<s:property value="#pvo.posid"/> | <s:property value="#pvo.type"/> | <s:property value="#pvo.count"/><br> 						
+						</s:iterator>
+					</s:if>
 				</td>
 			</tr>
+			<s:if test="#ms.last">
+				<tr>
+					<td colspan="2" align="center">总计</td>
+					<td><s:property value="#exc"/> </td>
+					<td>
+						<s:text name="format.number">
+	    					<s:param value="#amo"/>
+	    				</s:text>
+						
+					</td>
+					<td>共<s:property value="#pcou"/>台POS机</td>
+				</tr>
+			</s:if>
 		</s:iterator>
+		
 		</table>
 	</s:iterator>
 	
@@ -174,11 +230,11 @@
 	</table>
 </s:if>
 <s:else>
+<br>
 <h2>商户总计报表</h2>
 <span>商户总计报表没有数据显示</span>
 </s:else>
-
-
+</s:if>
 
 <br>
 <br>

@@ -35,6 +35,11 @@ import com.chinarewards.posnet2.report.vo.MerchantExRecord;
 import com.chinarewards.posnet2.report.vo.MerchantExRecordVo;
 import com.opensymphony.xwork2.ActionSupport;
 
+/**
+ * 总计报表的action
+ * @author weishengshui
+ *
+ */
 public class ReportTemplateAction extends ActionSupport {
 
 	private static final long serialVersionUID = -7259475053417870072L;
@@ -43,14 +48,15 @@ public class ReportTemplateAction extends ActionSupport {
 	private String startDate;
 	private String endDate;
 	private List total;//历史总计
-	private boolean totalExists=true;//历史总计是否有数据
+	private boolean totalExists=false;//历史总计是否有数据
 	private Map<String, EverydayRecordVo> everydayTotal;//每日报表
 	private List<String> everydayGraphs;//每日报表的统计图表
-	private boolean everydayTotalExists = true;//每日总计是否有数据
+	private boolean everydayTotalExists = false;//每日总计是否有数据
 	private Map<String,List<MerchantExRecordVo>> merchantTotal;//商户总计报表
-	private boolean merchantTotalExists = true;
+	private boolean merchantTotalExists = false;
 	private List<String> merchantTotalGraph;
 	private List<String> exchTypes;
+	private boolean cmdExists = false;
 	
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 	private LoginService loginService;
@@ -113,6 +119,10 @@ public class ReportTemplateAction extends ActionSupport {
 	public void setExchTypes(List<String> exchTypes) {
 		this.exchTypes = exchTypes;
 	}
+	
+	public boolean isCmdExists() {
+		return cmdExists;
+	}
 	public List<String> getEverydayGraphs() {
 		return everydayGraphs;
 	}
@@ -167,21 +177,42 @@ public class ReportTemplateAction extends ActionSupport {
 		activity_name = activity.getActivityName();
 		final Font font = new Font("宋体", Font.PLAIN, 15);
 		if(!cmdExists()){
+			logger.debug("validateTotalStatements cmd = 1");
 			startDate = dateToString(activity.getStartDate());
 			endDate = dateToString(activity.getEndDate()) ;
-		}else{
+		}else {
+			Date sDate = stringToDate(startDate);
+			Date eDate = stringToDate(endDate);
+//			checkStartDateEndDate(sDate, eDate);
+			if(sDate==null || eDate==null){
+				this.addActionError("请输入正确的日期！");
+				cmdExists = false;
+				return INPUT;
+			}
+			
+			Date now = new Date();
+			if(sDate.after(eDate)){
+				this.addActionError("输入的时间区间不正确！");
+				cmdExists = false;
+				return INPUT;
+			}
+			if(sDate.after(now)){
+				this.addActionError("输入的时间区间不正确！");
+				cmdExists = false;
+				return INPUT;
+			}
+		
 			exchTypes = reportService.getExchTypes(activity_id);
 		    //历史总计
 			total =  reportService.getTotalStatement(startDate, getToDate(endDate), activity_id);
-		    if(total==null || total.size()==0){
-		    	totalExists = false;
+		    if(total!=null && total.size()>0){
+		    	totalExists = true;
 		    }
 		    
 		    //每日报表
 		    everydayTotal = reportService.getEverydayStatement(startDate, getToDate(endDate), activity_id);
-		    if(everydayTotal == null || everydayTotal.size()==0){
-		    	everydayTotalExists = false;
-		    }else{
+		    if(everydayTotal != null && everydayTotal.size()>0){
+		    	everydayTotalExists = true;
 		    	int recordsCount = everydayTotal.size();
 		    	everydayGraphs = new ArrayList<String>();
 		    	int mod = 0;
@@ -281,10 +312,9 @@ public class ReportTemplateAction extends ActionSupport {
 		    
 		    //商户总计报表
 		    merchantTotal = reportService.getMerchantTotal(startDate, getToDate(endDate), activity_id);
-		    if(merchantTotal==null || merchantTotal.size()==0){
-		    	merchantTotalExists=false;
-		    }else{
-		    	
+		    if(merchantTotal!=null && merchantTotal.size()>0){
+		    	merchantTotalExists=true;
+		    	merchantTotalGraph = new ArrayList<String>();
 		    	for(String exType:exchTypes){
 //		    		int countSum=0;
 //		    		double amountSum=0;
@@ -320,32 +350,47 @@ public class ReportTemplateAction extends ActionSupport {
 	
 	
 	
-	public void validateTotalStatements() {
-		if(cmdExists()){
-			logger.debug("validateTotalStatements cmd = 1");
-			Date sDate = stringToDate(startDate);
-			Date eDate = stringToDate(endDate);
-			checkStartDateEndDate(sDate, eDate);
-		}
-	}
+//	public void validateTotalStatements() {
+//		if(cmdExists()){
+//			logger.debug("validateTotalStatements cmd = 1");
+//			Date sDate = stringToDate(startDate);
+//			Date eDate = stringToDate(endDate);
+////			checkStartDateEndDate(sDate, eDate);
+//			if(sDate==null || eDate==null){
+//				this.addActionError("请输入正确的日期！");
+//				return ;
+//			}
+//			
+//			Date now = new Date();
+//			if(sDate.after(eDate)){
+//				this.addActionError("输入的时间区间不正确！");
+//				return ;
+//			}
+//			if(sDate.after(now)){
+//				this.addActionError("输入的时间区间不正确！");
+//				return ;
+//			}
+//			
+//		}
+//	}
 	
-	private void checkStartDateEndDate(Date sDate, Date eDate){
-		if(sDate==null || eDate==null){
-			this.addActionError("请输入正确的日期！");
-			return;
-		}
-		
-		Date now = new Date();
-		if(sDate.after(eDate)){
-			this.addActionError("输入的时间区间不正确！");
-			return;
-		}
-		if(sDate.after(now)){
-			this.addActionError("输入的时间区间不正确！");
-			return;
-		}
-		
-	}
+//	private void checkStartDateEndDate(Date sDate, Date eDate){
+//		if(sDate==null || eDate==null){
+//			this.addActionError("请输入正确的日期！");
+//			return;
+//		}
+//		
+//		Date now = new Date();
+//		if(sDate.after(eDate)){
+//			this.addActionError("输入的时间区间不正确！");
+//			return;
+//		}
+//		if(sDate.after(now)){
+//			this.addActionError("输入的时间区间不正确！");
+//			return;
+//		}
+//		
+//	}
 	
 	private String getToDate(String endDate){
 		Date now = new Date();
@@ -382,9 +427,9 @@ public class ReportTemplateAction extends ActionSupport {
 	private boolean cmdExists(){
 		HttpServletRequest request = ServletActionContext.getRequest();
 		if(request.getParameter("cmd")!=null && request.getParameter("cmd").equals("1")){
-			return true;
+			return cmdExists=true;
 		}
-		return false;
+		return cmdExists=false;
 	}
 	
 	private void setLineChartProperties(JFreeChart chart, Font font) {

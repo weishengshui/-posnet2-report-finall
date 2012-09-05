@@ -67,7 +67,10 @@
 		<default-interceptor-ref name="crStack" />
 		
 		<global-results>
-			<result name="login">/pub/index.jsp</result>
+			<result name="login" type="redirectAction">
+				<param name="namespace">/pub</param>
+				<param name="actionName">logout</param>
+			</result>
 		</global-results>
 		
 		<global-exception-mappings>

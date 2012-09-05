@@ -3,6 +3,6 @@
 
 
 <s:if test="#session.Login==null">
-	<% 	response.sendRedirect(ctxRootPath+"/pub/index.jsp"); %>
+	<% 	response.sendRedirect(ctxRootPath+"/"); %>
 </s:if>
 

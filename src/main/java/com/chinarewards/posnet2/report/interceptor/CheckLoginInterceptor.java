@@ -28,6 +28,9 @@ public class CheckLoginInterceptor implements Interceptor {
 	public String intercept(ActionInvocation invocation) throws Exception {
 		
 		HttpSession session = ServletActionContext.getRequest().getSession();
+		if(invocation.getProxy().getActionName().equals("logout")){
+			return invocation.invoke();
+		}
 		if(session.getAttribute("Login")==null){
 			logger.debug("Users are not logged in!");
 			return Action.LOGIN;
