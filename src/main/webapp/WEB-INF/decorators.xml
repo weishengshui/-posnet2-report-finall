@@ -4,7 +4,7 @@
     <!-- Any URLs that are excluded will never be decorated by Sitemesh -->
     <excludes>
     	
-        <pattern>/nodecorate/*</pattern>
+<!--        <pattern>/nodecorate/*</pattern>-->
         <pattern>/css/*</pattern>
         <pattern>/styles/*</pattern>
         <pattern>/js/*</pattern>
@@ -40,7 +40,17 @@
 <!--		<pattern>/coastalCity201207.jsp</pattern>-->
 <!--		<pattern>/templateReport/reportTemplate.jsp</pattern>-->
 <!--	</decorator>-->
-
+		
+	
+	<decorator name="main2" page="main2.jsp">
+		<pattern>/view/qqmeishi/detailStatementsCondition.action</pattern>
+	</decorator>
+	
+	<decorator name="main3" page="main3.jsp">
+		<pattern>/view/qqmeishi/detailStatementsResult.action</pattern>
+		<pattern>/view/qqmeishi/reportEmpty.action</pattern>
+	</decorator>
+	
 	<!--	装饰首页背景	-->
 	<decorator name="main4" page="main4.jsp">
 		<pattern>/pub/index.jsp*</pattern>

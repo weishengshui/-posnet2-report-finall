@@ -9,8 +9,8 @@
 </head>
 
 <frameset rows="250,*">
-	<frame src="<%=ctxRootPath %>/view/qqmeishi/detailStatementsCondition.action">
-	<frame src="<%=ctxRootPath %>/view/qqmeishi/reportEmpty.action">
+	<frame id="top" name="top" src="<%=ctxRootPath %>/view/qqmeishi/detailStatementsCondition.action">
+	<frame id="buttom" name="buttom" src="<%=ctxRootPath %>/view/qqmeishi/reportEmpty.action">
 </frameset>
 <body>
 

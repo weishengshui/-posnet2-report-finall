@@ -17,11 +17,12 @@
 		 <action name="detailStatements">
 		 	<result>/WEB-INF/jsp/templateReport/detailStatementsTemplate.jsp</result>
 		 </action>
-		 <action name="detailStatementsCondition">
+		 <action name="detailStatementsCondition"  class="detailStatementAction">
 		 	<result>/WEB-INF/jsp/templateReport/detaiConditionStatementsTemplate.jsp</result>
 		 </action>
-		 <action name="detailStatementsResult">
-		 	<result>/WEB-INF/jsp/templateReport/detailResultStatementsTemplate.jsp</result>
+		 <action name="detailStatementsResult" class="detailStatementAction">
+		 	<result name="success">/WEB-INF/jsp/templateReport/detailResultStatementsTemplate.jsp</result>
+		 	<result name="input">/WEB-INF/jsp/templateReport/detailResultStatementsTemplate.jsp</result>
 		 </action>
 		 
 		 <!-- 总计报表的资源文件 -->
@@ -42,6 +43,9 @@
 		</action>
 		<action name="reportEmpty">
 			<result>/WEB-INF/jsp/templateReport/empty.jsp</result>
+		</action>
+		<action name="reportEmpty2">
+			<result>/WEB-INF/jsp/templateReport/empty2.jsp</result>
 		</action>
 		<action name="reportTemplate"  class="templateAction">
 			<result>/WEB-INF/jsp/templateReport/reportTemplate.jsp</result>

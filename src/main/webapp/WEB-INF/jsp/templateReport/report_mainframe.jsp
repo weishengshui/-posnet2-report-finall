@@ -10,6 +10,6 @@
 </head>
 <frameset id="mainframe" cols="20%,80%">
 	<frame id="left" name="left" src="<s:url  action="reportTemplate" namespace="/view/qqmeishi" />">
-	<frame id="right" name="right" src="<s:url  action="reportEmpty" namespace="/view/qqmeishi" />">
+	<frame id="right" name="right" src="<s:url  action="reportEmpty2" namespace="/view/qqmeishi" />">
 </frameset>
 </html>

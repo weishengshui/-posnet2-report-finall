@@ -25,7 +25,7 @@
 		<span>&nbsp;Welcome Report System</span>
 	</s:if>
 	<s:else>
-		<span>&nbsp;Hello&nbsp;<sec:authentication property="name"/>&nbsp;Welcome Report System</span>
+		<span>&nbsp;Hello&nbsp;<s:property value="#session.User.username" />&nbsp;Welcome Report System</span>
 	</s:else>
 </div>
 

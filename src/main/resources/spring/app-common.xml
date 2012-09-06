@@ -64,6 +64,7 @@
 			<value>
 				<!-- config your service -->
 				com.chinarewards.posnet2.report.service.user.LoginService.*=PROPAGATION_REQUIRED,readOnly,-com.chinarewards.posnet2.report.exception.ServiceLevelException
+				com.chinarewards.posnet2.report.service.user.ReportService.*=PROPAGATION_REQUIRED,readOnly,-com.chinarewards.posnet2.report.exception.ServiceLevelException
 			</value>
 		</property>
 	</bean>

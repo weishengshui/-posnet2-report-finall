@@ -4,6 +4,7 @@
 <%@ include file="/WEB-INF/jsp/checklogin.jsp"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
 <html>
 <head>
 <title>Operation</title>
@@ -17,20 +18,19 @@
 	src="<%=ctxRootPath%>/js/jquery/ui.datepicker.js"></script>
 </head>
 
-
 <body>
 <h2>总计报表</h2>
 <form
 	action="<s:url action='totalStatements' namespace="/view/qqmeishi" />?cmd=1"
-	method="post" onsubmit="return checkDate();">
+	method="post" >
 <table cellpadding="0" cellspacing="0">
 	<tr>
 		<td colspan="2">时间区间选择</td>
 	</tr>
 	<tr>
 		<td width="280pix">&nbsp;&nbsp;&nbsp;时间从: <input id="startDate"
-			name="startDate" value="<s:property value='startDate'/>" /> <span
-			id="startDateMsg"></span> <script charset="utf-8">
+			name="startDate" value="<s:property value='startDate'/>" />
+		<span id="startDateMsg"></span> <script charset="utf-8">
 					jQuery('#startDate').datepicker({showOn: 'both', showOtherMonths: true, 
 					showWeeks: true, firstDay: 1, changeFirstDay: false,
 					buttonImageOnly: true, buttonImage: '<%=ctxRootPath%>/images/calendar.gif'});
@@ -74,11 +74,6 @@
 
 <span>总计报表没有数据显示</span>
 </s:else>
-<!--<s:iterator value="total" status="id">-->
-<!--	<s:iterator value="total[#id.index]">-->
-<!--		<s:property />-->
-<!--	</s:iterator><br>-->
-<!--</s:iterator>-->
 
 <br>
 
@@ -90,11 +85,11 @@
 	<s:iterator value="everydayTotal" id="et" status="st">
 		<s:if test="#st.first">
 		<tr>
-			<td width="25">序号</td><td width="100" align="center">Date <br>(yyyy / mm / dd)</td><td width="80"  align="center">Weekday / <br>WK.of Yr.</td>
+			<td width="30">序号</td><td width="100" align="center">Date <br>(yyyy / mm / dd)</td><td width="80"  align="center">Weekday / <br>WK.of Yr.</td>
 			<s:iterator value="exchTypes" id="ext">
-				<td width="80"><s:property value="#ext"/></td>
+				<td width="80"><s:property value="#ext"/>总数</td>
 			</s:iterator>
-			<td width="80">金额</td>
+			<td width="80">消费总金额</td>
 			</tr>
 		</s:if>
 		<tr>
@@ -165,11 +160,11 @@
 				<h2>商户报表(<s:property value="key"/>)</h2>
 			<table>
 			<tr>
-				<td>序号</td>
+				<td width="30">序号</td>
 				<td>商户名称</td>
-				<td><s:property value="key"/>总数</td>
-				<td>消费总金额</td>
-				<td>POS机编号 | 交易类型 | 交易次数</td>
+				<td width="80"><s:property value="key"/>总数</td>
+				<td width="80">消费总金额</td>
+				<td width="180">POS机编号 | 交易类型 | 交易次数</td>
 			</tr>
 		
 		<s:iterator value="#t.value" id="mvo" status="ms">
@@ -184,7 +179,9 @@
 				</td>
 				<td>
 					<s:if test="#mvo.merchantExRecord.amount!=null">
-						<s:property value="#mvo.merchantExRecord.amount"/>
+						<s:text name="format.number">
+							<s:param value="#mvo.merchantExRecord.amount" />
+						</s:text>
 						<s:set var="amo" value="#amo + #mvo.merchantExRecord.amount" />
 					</s:if>
 					<s:else>

@@ -329,11 +329,11 @@ public class ReportTemplateAction extends ActionSupport {
 		    				dataset.addValue(merchantExRecord.getExCount(), shopName, shopName);
 		    				amountDataset.addValue(merchantExRecord.getAmount(), shopName, shopName);
 		    			}
-		    			JFreeChart chart = ChartFactory.createBarChart(activity_name+"("+exType+")", "", "交易数量", dataset, PlotOrientation.VERTICAL, false, false, false);
+		    			JFreeChart chart = ChartFactory.createBarChart3D(activity_name+"("+exType+")", "", "交易数量", dataset, PlotOrientation.VERTICAL, false, false, false);
 		    			setBarChartProperties(chart, font);
 		    			String filename = ServletUtilities.saveChartAsJPEG(chart, 800, 600, session);
 		    			merchantTotalGraph.add(ServletActionContext.getServletContext().getContextPath()+"/servlet/displayChart?filename="+filename);
-		    			chart = ChartFactory.createBarChart(activity_name+"("+exType+")", "", "金额", amountDataset, PlotOrientation.VERTICAL, false, false, false);
+		    			chart = ChartFactory.createBarChart3D(activity_name+"("+exType+")", "", "金额", amountDataset, PlotOrientation.VERTICAL, false, false, false);
 		    			setBarChartProperties(chart, font);
 		    			filename = ServletUtilities.saveChartAsJPEG(chart, 800, 600, session);
 		    			merchantTotalGraph.add(ServletActionContext.getServletContext().getContextPath()+"/servlet/displayChart?filename="+filename);
