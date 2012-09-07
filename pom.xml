@@ -2,8 +2,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.chinarewards</groupId>
-	<artifactId>jreport_demo</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>Posnet2Report</artifactId>
+	<version>0.0.1</version>
 	<packaging>war</packaging>
 	<issueManagement>
 		<system>Bugzilla</system>
@@ -378,7 +378,7 @@
 
 	<build>
 		<plugins>
-			<!-- Comment out the JRebel plugin before you commit! -->
+			<!-- Comment out the JRebel plugin before you commit! 
 			<plugin>
 				<groupId>org.zeroturnaround</groupId>
 				<artifactId>javarebel-maven-plugin</artifactId>
@@ -396,7 +396,8 @@
 				</configuration>
 				<version>1.0.5</version>
 			</plugin>
-
+			-->
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>

@@ -15,6 +15,10 @@
 		<intercept-url pattern="/my97/**" filters="none"/>
 		<intercept-url pattern="/styles/**" filters="none"/>
 		<intercept-url pattern="/pub/**" filters="none"/>
+		<intercept-url pattern="/WEB-INF/**" filters="none"/>
+		<intercept-url pattern="/WEB-INF/decorators/**" filters="none"/>
+		<intercept-url pattern="/WEB-INF/tld/**" filters="none"/>
+		<intercept-url pattern="/META-INF/**" filters="none"/>
 		
 		<!-- 查看明细报表的权限 -->
 		<intercept-url pattern="/view/qqmeishi/detail*" access="hasRole('report_detail')" />
@@ -43,9 +47,9 @@
 	<authentication-manager alias="authenticationManager">
 		<authentication-provider>
 			<jdbc-user-service data-source-ref="posnet2ReportDataSource" 
-				users-by-username-query="SELECT username,password, enabled as status FROM report_user WHERE username=?"
-				authorities-by-username-query="SELECT u.username, a.authority AS authority FROM report_user u, report_authorities a,
-report_user_role ur,report_role_authorities ra,report_role r 
+				users-by-username-query="SELECT username,password, enabled as status FROM Report_User WHERE username=?"
+				authorities-by-username-query="SELECT u.username, a.authority AS authority FROM Report_User u, Report_Authorities a,
+Report_User_Role ur,Report_Role_Authorities ra,Report_Role r 
 WHERE u.username=ur.username and ur.rolename=r.rolename and r.rolename=ra.rolename and ra.authority=a.authority and u.username=?"/>
 		</authentication-provider>
 	</authentication-manager>

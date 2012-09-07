@@ -161,7 +161,7 @@
 			<table>
 			<tr>
 				<td width="30">序号</td>
-				<td>商户名称</td>
+				<td width="110">商户名称</td>
 				<td width="80"><s:property value="key"/>总数</td>
 				<td width="80">消费总金额</td>
 				<td width="180">POS机编号 | 交易类型 | 交易次数</td>

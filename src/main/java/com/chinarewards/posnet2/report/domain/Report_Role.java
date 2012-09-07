@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="report_role")
+@Table(name="Report_Role")
 public class Report_Role {
 	
 	/**

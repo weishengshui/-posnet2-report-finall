@@ -29,11 +29,11 @@
 				<s:if test="#s.first">
 					<tr>
 						<td width='30'>序号</td>
-						<td width='120'>商家名称</td>
-						<td width='120'>POS机编号</td>
-						<td width='120'>验证码</td>
-						<td width='120'>消费金额</td>
-						<td width='120'>交易时间</td>
+						<td width='125'>商家名称</td>
+						<td width='125'>POS机编号</td>
+						<td width='125'>验证码</td>
+						<td width='125'>消费金额</td>
+						<td width='125'>交易时间</td>
 					</tr>
 				</s:if>
 				<tr>
@@ -49,7 +49,7 @@
 			
 			<table>
 				<tr>
-					<td>
+					<td width="auto">
 						<a href="<s:url action='detailStatementsResult' namespace="/view/qqmeishi" />?cmd=1&offset=1&merchantId=<s:property value='merchantId' />&startDate=<s:property value='startDate' />&endDate=<s:property value='endDate' />">首页</a>&nbsp;
 						<s:if test="offset!=1">
 							<a href="<s:url action='detailStatementsResult' namespace="/view/qqmeishi" />?cmd=1&offset=<s:property value='pre' />&merchantId=<s:property value='merchantId' />&startDate=<s:property value='startDate' />&endDate=<s:property value='endDate' />">上一页</a>&nbsp;	
@@ -58,10 +58,10 @@
 							<s:bean name="org.apache.struts2.util.Counter" id="counter">
 								<s:param name="first" value="offset >7 ? offset-5 : 1" />
 								<s:param name="last" value="offset < 7 ? (pageCount > 12 ? 12 : pageCount) : (offset < pageCount-5? offset+5: pageCount)" />
-								<s:iterator status="st">
+								<s:iterator id="c">
 									<!--	当前页码		-->
-									<s:if test="#st.count==offset">
-										<a href="<s:url action='detailStatementsResult' namespace="/view/qqmeishi" />?cmd=1&offset=<s:property/>&merchantId=<s:property value='merchantId' />&startDate=<s:property value='startDate' />&endDate=<s:property value='endDate' />"><font color="#ff0000"><s:property/></font></a>&nbsp;
+									<s:if test="#c==offset">
+										<a href="<s:url action='detailStatementsResult' namespace="/view/qqmeishi" />?cmd=1&offset=<s:property/>&merchantId=<s:property value='merchantId' />&startDate=<s:property value='startDate' />&endDate=<s:property value='endDate' />"><font color="red"><s:property/></font></a>&nbsp;
 									</s:if>	
 									<!--	其它页码		-->
 									<s:else>
@@ -76,7 +76,7 @@
 						<a href="<s:url action='detailStatementsResult' namespace="/view/qqmeishi" />?cmd=1&offset=<s:property value='pageCount' />&merchantId=<s:property value='merchantId' />&startDate=<s:property value='startDate' />&endDate=<s:property value='endDate' />">末页</a>&nbsp;
 						第<s:property value="offset"/>页&nbsp;共<s:property value="pageCount"/>页&nbsp;共<s:property value="allCount"/>条
 					</td>
-					<td>
+					<td width="auto">
 						<form action="<s:url action='detailStatementsResult' namespace="/view/qqmeishi" />" method="get">
 							<input type="hidden" name="merchantId" value="<s:property value='merchantId' />">
 							<input type="hidden" name="startDate" value="<s:property value='startDate' />">

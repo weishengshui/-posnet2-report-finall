@@ -197,7 +197,7 @@ public class DetailStatementAction extends ActionSupport {
 				hasData = false;
 				return SUCCESS;
 			}
-			pageSize = 2;
+			pageSize = 20;
 			pageCount = allCount%pageSize==0? allCount/pageSize:(allCount/pageSize+1);
 			logger.debug("offset="+offset);
 			if(offset<1){

@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name="report_role_authorities")
+@Table(name="Report_Role_Authorities")
 public class Role_Authorities  implements Serializable {
 	
 	

@@ -9,7 +9,7 @@ import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="report_user_role")
+@Table(name="Report_User_Role")
 @IdClass(UserRolePK.class)
 public class User_Role  implements Serializable {
 	
