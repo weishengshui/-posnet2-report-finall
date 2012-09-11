@@ -322,7 +322,7 @@ public class ReportTemplateAction extends ActionSupport {
 		    		DefaultCategoryDataset dataset = new DefaultCategoryDataset();//交易数量
 			    	DefaultCategoryDataset amountDataset = new DefaultCategoryDataset();//消费金额
 		    		List<MerchantExRecordVo> vos = merchantTotal.get(exType);
-		    		if(vos!=null&& vos.size()>=5){
+		    		if(vos!=null&& vos.size()>0){
 		    			for(MerchantExRecordVo vo:vos){
 		    				MerchantExRecord merchantExRecord = vo.getMerchantExRecord();
 		    				String shopName = merchantExRecord.getShopName();
@@ -333,10 +333,13 @@ public class ReportTemplateAction extends ActionSupport {
 		    			setBarChartProperties(chart, font);
 		    			String filename = ServletUtilities.saveChartAsJPEG(chart, 800, 600, session);
 		    			merchantTotalGraph.add(ServletActionContext.getServletContext().getContextPath()+"/servlet/displayChart?filename="+filename);
-		    			chart = ChartFactory.createBarChart3D(activity_name+"("+exType+")", "", "金额", amountDataset, PlotOrientation.VERTICAL, false, false, false);
-		    			setBarChartProperties(chart, font);
-		    			filename = ServletUtilities.saveChartAsJPEG(chart, 800, 600, session);
-		    			merchantTotalGraph.add(ServletActionContext.getServletContext().getContextPath()+"/servlet/displayChart?filename="+filename);
+		    			if(!exType.equals("礼品")){
+		    				chart = ChartFactory.createBarChart3D(activity_name+"("+exType+")", "", "消费金额", amountDataset, PlotOrientation.VERTICAL, false, false, false);
+			    			setBarChartProperties(chart, font);
+			    			filename = ServletUtilities.saveChartAsJPEG(chart, 800, 600, session);
+			    			merchantTotalGraph.add(ServletActionContext.getServletContext().getContextPath()+"/servlet/displayChart?filename="+filename);
+		    			}
+		    			
 		    		}
 		    	}
 		    	

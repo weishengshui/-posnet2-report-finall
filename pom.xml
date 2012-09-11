@@ -378,7 +378,7 @@
 
 	<build>
 		<plugins>
-			<!-- Comment out the JRebel plugin before you commit! 
+			<!-- Comment out the JRebel plugin before you commit! -->
 			<plugin>
 				<groupId>org.zeroturnaround</groupId>
 				<artifactId>javarebel-maven-plugin</artifactId>
@@ -396,7 +396,7 @@
 				</configuration>
 				<version>1.0.5</version>
 			</plugin>
-			-->
+			
 			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
